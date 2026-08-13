@@ -1,18 +1,29 @@
 # Java Service Validation and Unit Testing
 
-**CS-320 Software Test Automation | Java, JUnit, Validation Testing**
+**Java 17 | JUnit 5 | Maven | GitHub Actions**
 
-This repository contains a Java testing project built around three small service areas: contacts, tasks, and appointments. Each area includes domain rules, service operations, and unit tests designed to check both valid behavior and rejected input.
+This repository presents a maintained Java implementation built around three service areas: contacts, tasks, and appointments. Each area includes domain rules, service operations, and unit tests designed to check valid behavior, rejected input, boundary conditions, unique identifiers, and missing records.
 
 The project strengthened my ability to translate written requirements into testable conditions and to use repeatable tests when checking software changes.
+
+## Maintained Implementation
+
+The reviewable implementation follows the standard Maven layout:
+
+- [`src/main/java`](src/main/java) - contact, task, and appointment models and services
+- [`src/test/java`](src/test/java) - deterministic JUnit 5 model and service tests
+- [`pom.xml`](pom.xml) - Java 17 and JUnit build configuration
+- [`.github/workflows/test.yml`](.github/workflows/test.yml) - automated tests on pushes and pull requests
+
+The original Eclipse project and course-delivery artifacts remain for historical comparison, but they are not the maintained implementation.
 
 ## Project Areas
 
 | Component | Tested responsibilities |
 | --- | --- |
-| Contact service | Contact creation, field validation, updates, deletion, and identifiers |
-| Task service | Task creation, field constraints, updates, lookup, and deletion |
-| Appointment service | Appointment creation, date validation, description rules, and updates |
+| Contact service | Contact creation, field validation, updates, deletion, and unique identifiers |
+| Task service | Task creation, field constraints, updates, lookup, deletion, and unique identifiers |
+| Appointment service | Appointment creation, stable date validation, description rules, lookup, and deletion |
 
 ## Testing Approach
 
@@ -23,15 +34,28 @@ The test suite includes examples of:
 - Exception assertions for invalid constructor and setter input.
 - Tests covering add, update, retrieve, and delete operations.
 - Requirement-based checks for identifiers, phone numbers, descriptions, and appointment dates.
+- Fixed-clock appointment tests that do not expire as calendar time advances.
+- Duplicate-identifier and missing-record behavior.
+
+## Run the Tests
+
+Requirements: JDK 17 and Maven 3.9 or later.
+
+```bash
+mvn test
+```
+
+GitHub Actions runs the same command automatically. A successful workflow run is the evidence for the repository's test status.
 
 ## Repository Contents
 
-- `CS320SoftwareTest.zip` - Java source, service classes, and JUnit test classes
-- `CS320ContactService` - original contact-service project package
-- `CS320SoftwareTest` - original software-test project package
-- Supporting journals, reports, and a development screenshot
+- [`src/main/java`](src/main/java) - maintained production source
+- [`src/test/java`](src/test/java) - maintained JUnit 5 suite
+- [`CS320SoftwareTest.zip`](CS320SoftwareTest.zip) - original Eclipse project retained as a historical artifact
+- `CS320ContactService` and `CS320SoftwareTest` - original course packages
+- Supporting journals, report, and development screenshot
 
-The original course packages are preserved so the submitted work remains intact. The next technical cleanup will expose the reviewed Java source and tests directly in standard `src/main` and `src/test` folders after the test cases are re-run and corrected where necessary.
+The maintained implementation corrects defects found in the archived project, including unassigned constructor fields, reference-based string comparisons, unstable historical dates, and mismatched assertions. The original packages remain intact so the progression is transparent.
 
 ## What I Learned
 
