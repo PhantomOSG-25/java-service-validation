@@ -1,5 +1,7 @@
 # Java Service Validation and Unit Testing
 
+[![Java tests](https://github.com/PhantomOSG-25/CS-320-Software-Test-Automation/actions/workflows/test.yml/badge.svg)](https://github.com/PhantomOSG-25/CS-320-Software-Test-Automation/actions/workflows/test.yml)
+
 **Java 17 | JUnit 5 | Maven | GitHub Actions**
 
 This repository presents a maintained Java implementation built around three service areas: contacts, tasks, and appointments. Each area includes domain rules, service operations, and unit tests designed to check valid behavior, rejected input, boundary conditions, unique identifiers, and missing records.
