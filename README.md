@@ -1,6 +1,6 @@
 # Java Service Validation and Unit Testing
 
-[![Java tests](https://github.com/PhantomOSG-25/CS-320-Software-Test-Automation/actions/workflows/test.yml/badge.svg)](https://github.com/PhantomOSG-25/CS-320-Software-Test-Automation/actions/workflows/test.yml)
+[![Java tests](https://github.com/PhantomOSG-25/java-service-validation/actions/workflows/test.yml/badge.svg)](https://github.com/PhantomOSG-25/java-service-validation/actions/workflows/test.yml)
 
 **Java 17 | JUnit 5 | Maven | GitHub Actions**
 
