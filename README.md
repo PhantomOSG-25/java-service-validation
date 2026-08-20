@@ -1,74 +1,128 @@
 # Java Service Validation and Unit Testing
 
-[![Java tests](https://github.com/PhantomOSG-25/java-service-validation/actions/workflows/test.yml/badge.svg)](https://github.com/PhantomOSG-25/java-service-validation/actions/workflows/test.yml)
+[![Java verification](https://github.com/PhantomOSG-25/java-service-validation/actions/workflows/test.yml/badge.svg)](https://github.com/PhantomOSG-25/java-service-validation/actions/workflows/test.yml)
 
-**Java 17 | JUnit 5 | Maven | GitHub Actions**
+**Java 17 | JUnit 5 | Maven | JaCoCo | GitHub Actions**
 
-This repository presents a maintained Java implementation built around three service areas: contacts, tasks, and appointments. Each area includes domain rules, service operations, and unit tests designed to check valid behavior, rejected input, boundary conditions, unique identifiers, and missing records.
+A focused software-quality project that turns written validation requirements into testable Java behavior. The application models contacts, tasks, and appointments, then provides in-memory services for create, read, update, and delete workflows.
 
-The project strengthened my ability to translate written requirements into testable conditions and to use repeatable tests when checking software changes.
+The portfolio version emphasizes the work employers need to evaluate: maintainable source, deterministic tests, traceable requirements, automated verification, and an honest record of defects corrected from the historical course implementation.
 
-## Maintained Implementation
+## What This Demonstrates
 
-The reviewable implementation follows the standard Maven layout:
+- Translating business rules into constructor and setter validation
+- Designing positive, negative, boundary, and state-transition tests
+- Isolating tests so results do not depend on execution order
+- Injecting a fixed clock to make date-sensitive tests repeatable
+- Protecting unique identifiers and rejecting duplicate records
+- Preserving state when an invalid update is rejected
+- Enforcing build requirements and coverage thresholds in continuous integration
 
-- [`src/main/java`](src/main/java) - contact, task, and appointment models and services
-- [`src/test/java`](src/test/java) - deterministic JUnit 5 model and service tests
-- [`pom.xml`](pom.xml) - Java 17 and JUnit build configuration
-- [`.github/workflows/test.yml`](.github/workflows/test.yml) - automated tests on pushes and pull requests
+## System at a Glance
 
-The original Eclipse project and course-delivery artifacts remain for historical comparison, but they are not the maintained implementation.
-
-## Project Areas
-
-| Component | Tested responsibilities |
-| --- | --- |
-| Contact service | Contact creation, field validation, updates, deletion, and unique identifiers |
-| Task service | Task creation, field constraints, updates, lookup, deletion, and unique identifiers |
-| Appointment service | Appointment creation, stable date validation, description rules, lookup, and deletion |
-
-## Testing Approach
-
-The test suite includes examples of:
-
-- Positive tests for valid object creation and expected service behavior.
-- Negative tests for null values and values outside stated length limits.
-- Exception assertions for invalid constructor and setter input.
-- Tests covering add, update, retrieve, and delete operations.
-- Requirement-based checks for identifiers, phone numbers, descriptions, and appointment dates.
-- Fixed-clock appointment tests that do not expire as calendar time advances.
-- Duplicate-identifier and missing-record behavior.
-
-## Run the Tests
-
-Requirements: JDK 17 and Maven 3.9 or later.
-
-```bash
-mvn test
+```mermaid
+flowchart LR
+    R[Written requirements] --> M[Validated domain models]
+    M --> S[In-memory service layer]
+    T[JUnit 5 test suite] --> M
+    T --> S
+    S --> V[Maven verify]
+    V --> C[JaCoCo coverage gate]
+    C --> A[GitHub Actions evidence]
 ```
 
-GitHub Actions runs the same command automatically. A successful workflow run is the evidence for the repository's test status.
+| Area | Responsibilities |
+| --- | --- |
+| Contact | Immutable ID; validated names, ten-digit phone number, and address |
+| Task | Immutable ID; validated task name and description |
+| Appointment | Immutable ID; validated future-facing date and description |
+| Services | Unique record storage, lookup, explicit updates, deletion, and read-only list snapshots |
+| Verification | JUnit 5 tests, Maven lifecycle checks, JaCoCo coverage gates, and CI artifacts |
 
-## Repository Contents
+## Build and Verify
 
-- [`src/main/java`](src/main/java) - maintained production source
-- [`src/test/java`](src/test/java) - maintained JUnit 5 suite
-- [`CS320SoftwareTest.zip`](CS320SoftwareTest.zip) - original Eclipse project retained as a historical artifact
-- `CS320ContactService` and `CS320SoftwareTest` - original course packages
-- Supporting journals, report, and development screenshot
+Requirements:
 
-The maintained implementation corrects defects found in the archived project, including unassigned constructor fields, reference-based string comparisons, unstable historical dates, and mismatched assertions. The original packages remain intact so the progression is transparent.
+- JDK 17 or later
+- Maven 3.9 or later
 
-## What I Learned
+Run the complete quality gate:
 
-Testing is more than checking whether the normal path works. Reliable testing also examines boundaries, invalid input, exception behavior, and the effect of service operations on stored data. This project taught me to connect each test to a specific requirement and to use failures as evidence for what needs correction.
+```bash
+mvn --batch-mode --no-transfer-progress clean verify
+```
 
-## Skills Demonstrated
+The `verify` phase:
 
-Java, JUnit, unit testing, input validation, exception testing, requirement analysis, defect identification, debugging, and software quality assurance.
+1. Compiles the production and test source for Java 17.
+2. Executes the JUnit 5 suite.
+3. Generates the JaCoCo HTML report at `target/site/jacoco/index.html`.
+4. Fails if line coverage is below 85% or branch coverage is below 75%.
+
+GitHub Actions runs the same verification command for every pull request and every push to `main`. It retains the Surefire and JaCoCo reports for review.
+
+## Project Structure
+
+```text
+.
+|-- .github/workflows/test.yml
+|-- docs/
+|   |-- DEFECT_ANALYSIS.md
+|   |-- REQUIREMENTS_TRACEABILITY.md
+|   `-- TEST_STRATEGY.md
+|-- src/
+|   |-- main/java/com/michaelwood/validation/
+|   |   |-- model/
+|   |   `-- service/
+|   `-- test/java/com/michaelwood/validation/
+|       |-- model/
+|       `-- service/
+`-- pom.xml
+```
+
+## Test Design
+
+The suite checks more than the normal path:
+
+- Exact maximum-length values are accepted.
+- Null, blank, oversized, incorrectly formatted, past-date, duplicate-ID, and missing-record inputs are rejected.
+- All mutable fields are exercised through update operations.
+- Invalid updates are checked for both the exception and unchanged stored state.
+- Returned record lists are verified as structurally read-only.
+- Appointment tests use a fixed `Clock`, preventing failures as calendar time advances.
+
+See [Test Strategy](docs/TEST_STRATEGY.md) for the test-design rationale and [Requirements Traceability](docs/REQUIREMENTS_TRACEABILITY.md) for the requirement-to-test map.
+
+## Design Decisions
+
+- **Immutable identifiers:** IDs are assigned when a model is created and have no setter.
+- **Validation close to the data:** Models enforce their own invariants, so every service path receives valid records.
+- **Explicit service updates:** Services expose named update operations rather than requiring callers to mutate internal collections.
+- **Deterministic ordering:** `LinkedHashMap` provides stable iteration order for review and testing.
+- **Read-only snapshots:** `List.copyOf` prevents callers from structurally changing a service collection.
+- **Deterministic time:** The appointment model accepts a `Clock` for repeatable tests while retaining a convenient production constructor.
+
+## Historical Improvement
+
+This maintained version is based on the contacts, tasks, and appointments requirements from CS 320 Software Test Automation. The original Eclipse submission contained defects such as unassigned constructor fields, reference-based string comparisons, time-sensitive dates, contradictory assertions, and order-dependent identifiers.
+
+Those problems were treated as a debugging and QA exercise. The professional version corrects the behavior, uses a standard Maven layout, and adds repeatable automated verification. See [Defect Analysis](docs/DEFECT_ANALYSIS.md) for the concise before-and-after record.
+
+Raw course archives, desktop screenshots, journals, reports, grades, and institutional-system details are intentionally excluded from the professional project tree.
+
+## Scope and Limitations
+
+This is an in-memory validation and unit-testing project, not a production customer-management system.
+
+- Data is not persisted between runs.
+- There is no user interface, network API, authentication, or authorization.
+- The services are not designed for concurrent access.
+- Sample names, phone numbers, addresses, dates, and identifiers are fictitious test fixtures.
+
+These boundaries keep the repository focused on validation, service behavior, defect prevention, and automated testing.
 
 ## Author
 
 Michael B. Wood  
 Bachelor of Science in Computer Science, Software Engineering concentration  
-Southern New Hampshire University | Coursework completing August 2026
+Southern New Hampshire University, August 2026

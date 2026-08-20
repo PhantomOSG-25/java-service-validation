@@ -27,6 +27,14 @@ public final class TaskService {
         return task;
     }
 
+    public void updateName(String id, String name) {
+        get(id).setName(name);
+    }
+
+    public void updateDescription(String id, String description) {
+        get(id).setDescription(description);
+    }
+
     public void delete(String id) {
         if (tasks.remove(id) == null) {
             throw new NoSuchElementException("task not found: " + id);

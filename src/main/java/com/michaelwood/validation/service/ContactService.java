@@ -27,6 +27,22 @@ public final class ContactService {
         return contact;
     }
 
+    public void updateFirstName(String id, String firstName) {
+        get(id).setFirstName(firstName);
+    }
+
+    public void updateLastName(String id, String lastName) {
+        get(id).setLastName(lastName);
+    }
+
+    public void updatePhoneNumber(String id, String phoneNumber) {
+        get(id).setPhoneNumber(phoneNumber);
+    }
+
+    public void updateAddress(String id, String address) {
+        get(id).setAddress(address);
+    }
+
     public void delete(String id) {
         if (contacts.remove(id) == null) {
             throw new NoSuchElementException("contact not found: " + id);

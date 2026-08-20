@@ -1,6 +1,7 @@
 package com.michaelwood.validation.service;
 
 import com.michaelwood.validation.model.Appointment;
+import java.time.LocalDate;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +26,14 @@ public final class AppointmentService {
             throw new NoSuchElementException("appointment not found: " + id);
         }
         return appointment;
+    }
+
+    public void updateDate(String id, LocalDate date) {
+        get(id).setDate(date);
+    }
+
+    public void updateDescription(String id, String description) {
+        get(id).setDescription(description);
     }
 
     public void delete(String id) {
