@@ -1,6 +1,6 @@
 # Java Service Validation and Unit Testing
 
-[![Java verification](https://github.com/PhantomOSG-25/java-service-validation/actions/workflows/test.yml/badge.svg)](https://github.com/PhantomOSG-25/java-service-validation/actions/workflows/test.yml)
+[![Java verification](https://github.com/PhantomOSG-25/CS-320-Software-Test-Automation/actions/workflows/test.yml/badge.svg)](https://github.com/PhantomOSG-25/CS-320-Software-Test-Automation/actions/workflows/test.yml)
 
 **Java 17 | JUnit 5 | Maven | JaCoCo | GitHub Actions**
 
@@ -124,5 +124,5 @@ These boundaries keep the repository focused on validation, service behavior, de
 ## Author
 
 Michael B. Wood  
-Bachelor of Science in Computer Science, Software Engineering concentration  
-Southern New Hampshire University, August 2026
+B.S. Computer Science, Software Engineering concentration — conferred September 1, 2026  
+M.S. Artificial Intelligence — in progress at Southern New Hampshire University
